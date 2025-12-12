@@ -1,0 +1,20 @@
+services:
+  mail:
+    image: docker.io/mailserver/docker-mailserver:latest
+    container_name: mailserver
+    hostname: mail
+    domainname: local.test
+    env_file: mailserver.env
+    ports:
+      - "25:25"
+      - "587:587"
+      - "993:993"
+    volumes:
+      - ./config/:/tmp/docker-mailserver/   # persistencia configuración y SSL
+      - maildata:/var/mail                  # persistencia correos
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+
+volumes:
+  maildata:
